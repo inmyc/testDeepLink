@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://epgwt.easycard.com.tw/uupay-api-merchant/img/favicon.png">
+    <!-- Common JS-->
+    <script type="text/javascript" src="https://epgwt.easycard.com.tw/uupay-api-merchant/js/jquery.min.js"></script>
+    <script type="text/javascript" src="https://epgwt.easycard.com.tw/uupay-api-merchant/js/bootstrap.min.js"></script>
+    <!-- Common CSS-->
+    <link rel="stylesheet" href="https://epgwt.easycard.com.tw/uupay-api-merchant/css/bootstrap-reset-breakpoint.css">
+    <link rel="stylesheet" href="https://epgwt.easycard.com.tw/uupay-api-merchant/css/style.css">
+    <script type="text/javascript" src="https://epgwt.easycard.com.tw/uupay-api-merchant/js/epapp.js"></script>
+    <script type="text/javascript">
+    	var device = getMobileOperatingSystem();
+    	var message = 'this device is : ' + device;
+    	var orderId = "112022072015703351";
+    	console.log(message);
+		//var deepLinkUrl = "https:\/\/easycard.page.link\/?\u0026efr=0\u0026apn=com.easycard.wallet\u0026ibi=tw.com.easycard.easycardwallet.enterprise-t\u0026isi=786065396\u0026link=https%3A%2F%2Fepkawt.easycard.com.tw%2FdeepLink%3Fdata%3DjSx2Z%252FclvqU5PtjSX2Z31QrfpUoif9U2s9UTOUovpHn0CwcgfL%252FPYDU%252B7hGXpSACsODZ2ydttfDa%250D%250AIU1Xc6GvBkRfcd4hTWdzCs%252FlzsmNjNgUO1sGR16F6lJcowS7NlxuUUI9ECSPVhAOheT8qMoSv%252BpL%250D%250Ax9lHlyp%252B9s47EDutztLF8tzH1a6%252FjLBqssPs03VDQ4Uhkmbz8Kobo82CUHLr1%252BGB97lfNrar";
+		var deepLinkUrl = "https://branchster.app.link/70smQJnlRrb";
+
+		//if(typeof(deepLinkUrl) != "undefined" && deepLinkUrl != null && deepLinkUrl.length > 0 && device != "may be is web"){
+			window.location.href = deepLinkUrl;
+		//}
+		
+		var callBackUrl = "https:\/\/omni1.lafresh.com.tw:8888\/confirmOrder\/checkPayment";
+		var timer;
+		function getOrderStatus(orderId, callBackUrl){
+			$.ajax({
+		        url : 'https://epgwt.easycard.com.tw/uupay-api-merchant/orderQuery/queryOrderStatus',
+		        type : "get",
+		        data : { orderId : orderId},
+		        async : true,
+		        success : function(data) {
+		        	if('PAYMENT_RECEIVED' == data || 'COMPLETED' == data || 'REFUND_COMPLETED' == data) {
+		        		window.location.href = callBackUrl;
+		        		clearTimeout(timer);
+					}
+		        }
+		    });
+			timer = setTimeout(function(){getOrderStatus(orderId, callBackUrl)}, 5000);
+		}
+		
+		
+		if(typeof(callBackUrl) != "undefined" && callBackUrl != null && callBackUrl.length > 0){
+			getOrderStatus(orderId, callBackUrl);
+			//getOrderStatus(orderId, callBackUrl);
+		}
+	</script>
+  </head>
+  <body>
+    <!-- ============================== header start ==============================-->
+    <header>
+      <div class="logo"><img src="https://epgwt.easycard.com.tw/uupay-api-merchant/img/easyWalletLogoWords@2x.png"></div>
+    </header>
+    <!-- ============================== header close ==============================-->
+    <main>
+      <h2>請開啟 Easy Wallet APP，點選「掃碼/轉帳」付款</h2>
+      <section class="qrcode"> 
+        <h3>提醒您！在付款完成前，請勿關閉此頁</h3>
+        <div class="content">
+          <figure>
+            <div class="code"><img src="https://epgwt.easycard.com.tw/uupay-api-merchant/standard/v1/member/trade/order/qrcode/112022072015703351/300/300" alt="QRCode image for ordering"/></div>
+            <figcaption class="price"> 
+              <p>付款金額 (NT)</p><strong>$1,000</strong>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+      <p class="website">需成為悠遊付會員才能用此方式付款，<br class="d-block d-sm-none">下載請點擊&nbsp;<a href="https://easywallet.easycard.com.tw/download/" target="_blank">悠遊付官方網站</a>。</p>
+      <p class="website">若QR Code無法顯示，請使用其他瀏覽器再試一次。</p>
+      <!-- ============================== content start =============================-->
+      <!-- ============================== content close =============================-->
+    </main>
+    <!-- ============================== footer start ==============================-->
+    <footer>
+      <div class="footer-wrap">
+        <p class="copyright">
+           如有問題，歡迎來信至悠遊卡公司客服信箱<br class="d-block d-sm-none"><a href="maileto:service@easycard.com;">service@easycard.com</a>，或洽悠遊卡公司客服412-8880 <br class="d-block d-sm-none">(手機及金馬地區請加02)</p>
+      </div>
+    </footer>
+    <!-- ============================== footer close ==============================-->
+  </body>
+</html>
